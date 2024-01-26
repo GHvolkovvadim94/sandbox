@@ -29,7 +29,6 @@ public class DamageText : MonoBehaviour
             transform.position = new Vector3(transform.position.x, Mathf.Lerp(startY, targetY, t), transform.position.z);
             yield return null;
         }
-
-        Destroy(gameObject); // ”ничтожаем текст после завершени€ анимации
+        Destroy(gameObject);
     }
 }

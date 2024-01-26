@@ -7,8 +7,7 @@ public class GameController : MonoBehaviour
     private Enemy enemy;
     private int level = 1;
     private UIController uiController;
-    private float autoAttackTimer; // Таймер для автоматического нанесения урона
-
+    private float autoAttackTimer;
     private void Start()
     {
         uiController = TryGetComponent(out UIController result) ? result :
@@ -19,22 +18,16 @@ public class GameController : MonoBehaviour
         autoAttackTimer = player.CurrentAutoAttackIntervalValue;
 
         enemy.OnUpdateHealth += uiController.UpdateEnemyHealthUI;
-
+        uiController.InstantUpdateCoinsUI(player.CoinManager.CurrentCoinsValue);
         UpdateUI();
     }
 
     private void Update()
     {
-        // Обновляем таймер каждый кадр
         autoAttackTimer -= Time.deltaTime;
-
-        // Проверяем, прошло ли достаточно времени для автоматической атаки
         if (autoAttackTimer <= 0)
         {
-            // Выполняем автоматическую атаку
             AttackAndTryNext();
-
-            // Сбрасываем таймер
             autoAttackTimer = player.CurrentAutoAttackIntervalValue;
         }
     }
@@ -44,52 +37,41 @@ public class GameController : MonoBehaviour
 
         if (enemy.IsDefeated())
         {
-            GetCoinsReward();// Получаем награду
-            enemy = enemy.NextEnemy(); // Обновляем врага
-            level++; // Идём на следующий уровень
+            GetCoinsReward();
+            enemy = enemy.NextEnemy();
+            level++;
         }
-        // Обновить UI после атаки и проверки
         UpdateUI();
     }
 
     private void GetCoinsReward()
     {
-        player.CoinManager.SetTargetCoinsValueToAdd(enemy.RewardValue); // Устанавливаем награду для зачисления на баланс
-        uiController.UpdateCoinsUIAnimated(player.CoinManager.CurrentCoinsValue, player.CoinManager.TargetCoinsValue); // Проигрываем анимацию
-        player.CoinManager.ApplyCoins(); //Применяем награду
+        player.CoinManager.SetTargetCoinsValueToAdd(enemy.RewardValue);
+        uiController.UpdateCoinsUIAnimated(player.CoinManager.CurrentCoinsValue, player.CoinManager.TargetCoinsValue);
+        player.CoinManager.ApplyCoins();
     }
 
     public void UpgradeDamage()
     {
-        // Метод вызывается при клике на кнопку улучшения урона
-        player.UpgradeDamage(10,1);
+        player.UpgradeDamage(10, 1);
         uiController.UpdateCoinsUIAnimated(player.CoinManager.CurrentCoinsValue, player.CoinManager.TargetCoinsValue);
         uiController.UpdateClickDamageUI(player.Damage);
-        player.CoinManager.ApplyCoins(); //Применяем списание
-
-
+        player.CoinManager.ApplyCoins();
     }
 
     public void UpgradeAutoAttack()
     {
-        // Метод вызывается при клике на кнопку улучшения автоатаки
-        player.UpgradeAutoAttack(15,0.2f);
+        player.UpgradeAutoAttack(15, 0.2f);
         uiController.UpdateCoinsUIAnimated(player.CoinManager.CurrentCoinsValue, player.CoinManager.TargetCoinsValue);
         uiController.UpdateAutoAttackIntervalUI(player.CurrentAutoAttackIntervalValue, player.MaxAutoAttackIntervalValue);
-        player.CoinManager.ApplyCoins(); //Применяем списание
-
-
+        player.CoinManager.ApplyCoins();
     }
 
     private void UpdateUI()
     {
         uiController.UpdateEnemyHealthUI(enemy.CurrentHealth, enemy.MaxHealth);
         uiController.UpdateLevelUI(level);
-        uiController.InstantUpdateCoinsUI(player.CoinManager.CurrentCoinsValue);
-        uiController.UpdateClickDamageUI(player.Damage);
         uiController.UpdateAutoAttackIntervalUI(player.CurrentAutoAttackIntervalValue, player.MaxAutoAttackIntervalValue);
-
-
     }
 }
 

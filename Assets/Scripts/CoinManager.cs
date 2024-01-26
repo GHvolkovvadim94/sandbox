@@ -19,5 +19,5 @@ public class CoinManager
         TargetCoinsValue = CurrentCoinsValue - amountToSpend;
     }
 
-    public void ApplyCoins()=> CurrentCoinsValue = TargetCoinsValue;
+    public void ApplyCoins() => CurrentCoinsValue = TargetCoinsValue;
 }

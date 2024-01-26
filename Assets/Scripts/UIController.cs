@@ -1,24 +1,30 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private Text enemyHealthValueText;
+    private TMP_Text enemyHealthValueText;
     [SerializeField]
-    private Text coinsValueText;
+    private TMP_Text coinsValueText;
     [SerializeField]
-    private Text levelValueText;
+    private TMP_Text levelValueText;
     [SerializeField]
-    private Text autoAttackIntervalValueText;
+    private TMP_Text autoAttackIntervalValueText;
     [SerializeField]
-    private Text clickDamageValueText;
+    private TMP_Text clickDamageValueText;
+    [SerializeField]
+    private Slider enemyHealthBar;
+    [SerializeField]
     private Coroutine coinAnimationCoroutine;
 
     public void UpdateEnemyHealthUI(int health, int maxHealth)
     {
-        enemyHealthValueText.text = "Enemy Health: " + health.ToString();
+        enemyHealthValueText.text = $"{health}/{maxHealth}";
+        float healthPercentage = (float)health / maxHealth;
+        enemyHealthBar.value = healthPercentage;
     }
 
     public void InstantUpdateCoinsUI(int coins)
