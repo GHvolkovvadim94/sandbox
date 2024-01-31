@@ -77,7 +77,7 @@ public class UIController : MonoBehaviour
     }
     public void UpdateClickDamageUI(int damage)
     {
-        clickDamageValueText.text += damage.ToString();
+        clickDamageValueText.text = damage.ToString();
     }
 
 }

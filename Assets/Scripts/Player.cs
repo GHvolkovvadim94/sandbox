@@ -53,7 +53,14 @@ public class Player
     }
     private void UpgradeAutoAttackInternal(float increment)
     {
-        CurrentAutoAttackIntervalValue -= increment;
+        if (CurrentAutoAttackIntervalValue <= MaxAutoAttackIntervalValue)
+        {
+            CurrentAutoAttackIntervalValue = MaxAutoAttackIntervalValue;
+        }
+        else
+        {
+            CurrentAutoAttackIntervalValue -= increment;
+        }
     }
 
     private void ShowNotEnoughCoinsMessage()

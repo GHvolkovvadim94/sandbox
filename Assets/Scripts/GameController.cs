@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
 
         enemy.OnUpdateHealth += uiController.UpdateEnemyHealthUI;
         uiController.InstantUpdateCoinsUI(player.CoinManager.CurrentCoinsValue);
+
         UpdateUI();
     }
 
@@ -71,6 +72,7 @@ public class GameController : MonoBehaviour
     {
         uiController.UpdateEnemyHealthUI(enemy.CurrentHealth, enemy.MaxHealth);
         uiController.UpdateLevelUI(level);
+        uiController.UpdateClickDamageUI(player.Damage);
         uiController.UpdateAutoAttackIntervalUI(player.CurrentAutoAttackIntervalValue, player.MaxAutoAttackIntervalValue);
     }
 }
